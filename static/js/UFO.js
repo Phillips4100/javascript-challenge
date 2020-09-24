@@ -7,13 +7,14 @@
 var ufoData = data;
 
 var tbody = d3.select('tbody')
+renderTable();
 
 var filter = d3.select('.btn-default');
 
 filter.on('click', function() {
-    // location.reload();
-    // d3.event.preventDefault();
-
+    // $("#table").empty();
+    d3.event.preventDefault();
+    
     // collect input values
     var date = d3.select('#Date');
     var dateVal = date.property("value").toLowerCase().trim();
@@ -21,26 +22,23 @@ filter.on('click', function() {
     var cityVal = city.property("value").toLowerCase().trim();
     var state = d3.select('#State');
     var stateVal = state.property("value").toLowerCase().trim();
-
-    location.reload();
+    
     // create filters for each value
     if (dateVal != "") {
-        ufoData = ufoData.filter(input => input.datetime === dateVal)
+        ufoData1 = ufoData.filter(input => input.datetime === dateVal)
     }
     if (cityVal != "") {
-        ufoData = ufoData.filter(input => input.city === cityVal)
+        ufoData1 = ufoData.filter(input => input.city === cityVal)
     }
     if (stateVal != "") {
-        ufoData = ufoData.filter(input => input.state === stateVal)
+        ufoData1 = ufoData.filter(input => input.state === stateVal)
     }
-    console.log(ufoData)
-    renderTable();
+    console.log(ufoData1)
+    renderNewTable();
 });
 
-renderTable();
-
 // create table
- function renderTable() {
+function renderTable() {
     ufoData.forEach(function(sighting) {
         // location.reload();
         //  console.log (sightings);
@@ -50,4 +48,16 @@ renderTable();
              cell.text(value);
          });
      });
+}
+
+function renderNewTable() {
+    $("tbody").empty();
+    console.log(ufoData1);
+    ufoData1.forEach(function(sighting) {
+        var row = tbody.append('tr')
+        Object.entries(sighting).forEach(function([key, value]) {
+            var cell = tbody.append('td');
+            cell.text(value);
+        });
+    });
  }
